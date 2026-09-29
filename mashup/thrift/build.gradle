@@ -1,5 +1,6 @@
 plugins {
-    id 'java'
+    id 'war'
+    id 'org.gretty' version '4.1.6'
 }
 
 repositories {
@@ -10,6 +11,7 @@ dependencies {
     implementation project(':model')
     implementation 'org.apache.thrift:libthrift:0.19.0'
     implementation 'org.slf4j:slf4j-simple:2.0.16'
+    providedCompile 'jakarta.servlet:jakarta.servlet-api:5.0.0'
 
     testImplementation platform('org.junit:junit-bom:6.0.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
@@ -43,4 +45,10 @@ compileJava.dependsOn generateThrift
 
 test {
     useJUnitPlatform()
+}
+
+gretty {
+    servletContainer = 'jetty11'
+    httpPort = 8080
+    contextPath = '/'
 }

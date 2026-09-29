@@ -1,52 +1,64 @@
 package movie;
 
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 public class MovieModelImpl implements MovieModel {
-    private static MovieModelImpl instance = null;
-    private List<Movie> movies = null;
+    private static final MovieModelImpl instance = new MovieModelImpl();
+    private static final List<Movie> movies = new ArrayList<>();
 
-    private MovieModelImpl() {
-        movies = new ArrayList<>();
+    static {
         movies.add(new Movie("titlea", 1234, new VisualisationInfo(new Date(20), 2)));
     }
 
-    public static MovieModelImpl getInstance() {
-        if (instance == null) {
-            instance = new MovieModelImpl();
-        }
+    private MovieModelImpl() {
+    }
 
+    public static MovieModelImpl getInstance() {
         return instance;
     }
 
     @Override
-    public void addMovie(String title, int year, Date visualisationDate, int score) {
-        movies.add(new Movie(title, year, new VisualisationInfo(visualisationDate, score)));
+    public synchronized void addMovie(String title, int year, Date visualisationDate, int score) {
+        Movie movie = new Movie(title, year, new VisualisationInfo(visualisationDate, score));
+
+        for (int i = 0; i < movies.size(); i++) {
+            if (movies.get(i).getTitle().equals(title)) {
+                movies.set(i, movie);
+                return;
+            }
+        }
+
+        movies.add(movie);
     }
 
     @Override
-    public Movie findMovieByTitle(String title) throws MovieNotFoundException {
+    public synchronized Movie findMovieByTitle(String title) throws MovieNotFoundException {
         for (var movie: movies) {
             if (movie.getTitle().equals(title)) {
                 return movie;
             }
         }
 
-        throw new MovieNotFoundException();
+        throw new MovieNotFoundException(title);
     }
 
     @Override
-    public List<Movie> findMoviesByYear(int year) {
+    public synchronized List<Movie> findMoviesByYear(int year) {
         var moviesByYear = new ArrayList<Movie>();
 
         for (var movie: movies) {
-            if (movie.getYear() == year) {
+            if (viewingYear(movie) == year) {
                 moviesByYear.add(movie);
             }
         }
 
         return moviesByYear;
+    }
+
+    private static int viewingYear(Movie movie) {
+        return movie.getInfo().getDate().toInstant().atZone(ZoneId.systemDefault()).getYear();
     }
 }

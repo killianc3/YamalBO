@@ -39,13 +39,13 @@ class MovieServiceThriftImplTest {
     }
 
     @Test
-    void findMoviesByYear_returnsOnlyMatchingYear() throws Exception {
-        service.addMovie(new MovieDto("The Matrix", (short) 1999, "2025-01-10", (short) 9));
+    void findMoviesByYear_returnsOnlyMoviesSeenThatYear() throws Exception {
+        service.addMovie(new MovieDto("The Matrix", (short) 1999, "2024-01-10", (short) 9));
         service.addMovie(new MovieDto("Inception", (short) 2010, "2025-02-20", (short) 8));
 
-        List<MovieDto> movies1999 = service.findMoviesByYear((short) 1999);
+        List<MovieDto> seenIn2024 = service.findMoviesByYear((short) 2024);
 
-        assertEquals(1, movies1999.size());
-        assertEquals("The Matrix", movies1999.get(0).getTitle());
+        assertEquals(1, seenIn2024.size());
+        assertEquals("The Matrix", seenIn2024.get(0).getTitle());
     }
 }

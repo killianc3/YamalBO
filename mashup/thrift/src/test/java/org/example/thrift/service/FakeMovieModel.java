@@ -5,6 +5,7 @@ import movie.MovieModel;
 import movie.MovieNotFoundException;
 import movie.VisualisationInfo;
 
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -32,7 +33,7 @@ class FakeMovieModel implements MovieModel {
     public List<Movie> findMoviesByYear(int year) {
         List<Movie> result = new ArrayList<>();
         for (Movie m : movies) {
-            if (m.getYear() == year) {
+            if (m.getInfo().getDate().toInstant().atZone(ZoneId.systemDefault()).getYear() == year) {
                 result.add(m);
             }
         }
