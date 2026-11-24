@@ -16,12 +16,12 @@ public final class MovieDtoMapper {
     }
 
     public static MovieDto toDto(Movie movie) {
-        VisualisationInfo info = movie.getInfo();
+        VisualisationInfo info = movie.getVisualisationInfo();
         return new MovieDto(
                 movie.getTitle(),
                 (short) movie.getYear(),
-                formatDate(info.getDate()),
-                (short) info.getScore());
+                formatDate(info.getVisualisationDate()),
+                (short) info.getPunctuation());
     }
 
     public static Date parseDate(String visualisationDate) {

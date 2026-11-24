@@ -21,8 +21,8 @@ public class MovieModelImpl implements MovieModel {
     }
 
     @Override
-    public synchronized void addMovie(String title, int year, Date visualisationDate, int score) {
-        Movie movie = new Movie(title, year, new VisualisationInfo(visualisationDate, score));
+    public synchronized void addMovie(String title, int year, Date visualisationDate, int punctuation) {
+        Movie movie = new Movie(title, year, new VisualisationInfo(visualisationDate, punctuation));
 
         for (int i = 0; i < movies.size(); i++) {
             if (movies.get(i).getTitle().equals(title)) {
@@ -59,6 +59,6 @@ public class MovieModelImpl implements MovieModel {
     }
 
     private static int viewingYear(Movie movie) {
-        return movie.getInfo().getDate().toInstant().atZone(ZoneId.systemDefault()).getYear();
+        return movie.getVisualisationInfo().getVisualisationDate().toInstant().atZone(ZoneId.systemDefault()).getYear();
     }
 }

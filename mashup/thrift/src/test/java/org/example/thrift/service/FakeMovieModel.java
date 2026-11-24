@@ -15,8 +15,8 @@ class FakeMovieModel implements MovieModel {
     private final List<Movie> movies = new ArrayList<>();
 
     @Override
-    public void addMovie(String title, int year, Date visualisationDate, int score) {
-        movies.add(new Movie(title, year, new VisualisationInfo(visualisationDate, score)));
+    public void addMovie(String title, int year, Date visualisationDate, int punctuation) {
+        movies.add(new Movie(title, year, new VisualisationInfo(visualisationDate, punctuation)));
     }
 
     @Override
@@ -33,7 +33,7 @@ class FakeMovieModel implements MovieModel {
     public List<Movie> findMoviesByYear(int year) {
         List<Movie> result = new ArrayList<>();
         for (Movie m : movies) {
-            if (m.getInfo().getDate().toInstant().atZone(ZoneId.systemDefault()).getYear() == year) {
+            if (m.getVisualisationInfo().getVisualisationDate().toInstant().atZone(ZoneId.systemDefault()).getYear() == year) {
                 result.add(m);
             }
         }

@@ -3,14 +3,14 @@ package movie;
 import java.util.Date;
 
 public class VisualisationInfo {
-    private Date date;
-    private int score;
+    private Date visualisationDate;
+    private int punctuation;
 
-    public VisualisationInfo(Date date, int score) {
-        this.date = date;
-        this.score = score;
+    public VisualisationInfo(Date visualisationDate, int punctuation) {
+        this.visualisationDate = visualisationDate;
+        this.punctuation = punctuation;
     }
 
-    public Date getDate() { return date; }
-    public int getScore() { return score; }
+    public Date getVisualisationDate() { return visualisationDate; }
+    public int getPunctuation() { return punctuation; }
 }
