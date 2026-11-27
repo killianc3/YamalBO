@@ -1,5 +1,6 @@
 package movie;
 
+import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
@@ -7,10 +8,12 @@ import java.util.List;
 
 public class MovieModelImpl implements MovieModel {
     private static final MovieModelImpl instance = new MovieModelImpl();
-    private static final List<Movie> movies = new ArrayList<>();
+    private final List<Movie> movies = new ArrayList<>();
 
     static {
-        movies.add(new Movie("titlea", 1234, new VisualisationInfo(new Date(20), 2)));
+        instance.addMovie("The Matrix", 1999, date(2024, 3, 12), 9);
+        instance.addMovie("Inception", 2010, date(2024, 7, 5), 8);
+        instance.addMovie("Interstellar", 2014, date(2025, 1, 18), 10);
     }
 
     private MovieModelImpl() {
@@ -59,6 +62,11 @@ public class MovieModelImpl implements MovieModel {
     }
 
     private static int viewingYear(Movie movie) {
-        return movie.getVisualisationInfo().getVisualisationDate().toInstant().atZone(ZoneId.systemDefault()).getYear();
+        Date visualisationDate = movie.getVisualisationInfo().getVisualisationDate();
+        return visualisationDate.toInstant().atZone(ZoneId.systemDefault()).getYear();
+    }
+
+    private static Date date(int year, int month, int day) {
+        return Date.from(LocalDate.of(year, month, day).atStartOfDay(ZoneId.systemDefault()).toInstant());
     }
 }
